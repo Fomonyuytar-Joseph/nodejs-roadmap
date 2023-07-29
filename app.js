@@ -109,45 +109,56 @@ const deleteTour = (req, res) => {
 };
 
 
-const getAllUsers =(req,res)=>{
+const getAllUsers = (req, res) => {
   res.status(500).json({
-    status:'error',
-    message:"this route is under build"
+    status: 'error',
+    message: "this route is under build"
   })
 }
-const getUser =(req,res)=>{
+const getUser = (req, res) => {
   res.status(500).json({
-    status:'error',
-    message:"this route is under build"
+    status: 'error',
+    message: "this route is under build"
   })
 }
-const createUser =(req,res)=>{
+const createUser = (req, res) => {
   res.status(500).json({
-    status:'error',
-    message:"this route is under build"
+    status: 'error',
+    message: "this route is under build"
   })
 }
-const updateUser =(req,res)=>{
+const updateUser = (req, res) => {
   res.status(500).json({
-    status:'error',
-    message:"this route is under build"
+    status: 'error',
+    message: "this route is under build"
   })
 }
-const deleteUser =(req,res)=>{
+const deleteUser = (req, res) => {
   res.status(500).json({
-    status:'error',
-    message:"this route is under build"
+    status: 'error',
+    message: "this route is under build"
   })
 }
 
 
 
 //routes
-app.route('/api/v1/tours').get(getAllTours).post(createTour);
-app.route('/api/v1/tours/:id').get(getTour).patch(updateTour).delete(deleteTour);
+const tourRouter = express.Router();
+const userRouter = express.Router();
 
-app.route('/api/v1/users').get(getAllUsers).post(createUser);
-app.route('/api/v1/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
+
+
+
+
+tourRouter.route('/').get(getAllTours).post(createTour);
+tourRouter.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
+
+userRouter.route('/').get(getAllUsers).post(createUser);
+userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser)
+
+
+app.use('/api/v1/tours', tourRouter)
+app.use('/api/v1/users', userRouter)
 
 const port = 8000;
 app.listen(port, () => {
