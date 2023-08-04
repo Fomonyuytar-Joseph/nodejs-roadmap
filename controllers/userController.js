@@ -10,7 +10,7 @@ exports.getAllUsers = (req, res) => {
 exports.getUser = (req, res) => {
     res.status(500).json({
         status: 'error',
-        message: "this route is under build"
+        message: "this route is under construction"
     })
 }
 exports.createUser = (req, res) => {
