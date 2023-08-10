@@ -1,21 +1,22 @@
 const fs = require('fs');
+const Tour = require('./../models/toursModel');
 
-const tours = JSON.parse(
-    fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
-);
+// const tours = JSON.parse(
+//     fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+// );
 
 
-exports.checkID =(req,res,next,val)=>{
-     if (req.params.id * 1 > tours.length) {
-       return res.status(404).json({
-         status: 'failied',
-         message: 'invalid ID',
-       });
-     }
+// exports.checkID =(req,res,next,val)=>{
+//      if (req.params.id * 1 > tours.length) {
+//        return res.status(404).json({
+//          status: 'failied',
+//          message: 'invalid ID',
+//        });
+//      }
 
-     next();
+//      next();
 
-}
+// }
 
 
 exports.checkBody=(req,res,next)=>{
@@ -35,10 +36,10 @@ exports.getAllTours = (req, res) => {
     res.status(200).json({
         status: 'success',
         requestedAt: req.requestTime,
-        results: tours.length,
-        data: {
-            tours: tours,
-        },
+        // results: tours.length,
+        // data: {
+        //     tours: tours,
+        // },
     });
 };
 
@@ -54,36 +55,36 @@ exports.getTour = (req, res) => {
     //     });
     // }
 
-    const tour = tours.find((el) => el.id === id);
+    // const tour = tours.find((el) => el.id === id);
 
-    res.status(200).json({
-        status: 'success',
+    // res.status(200).json({
+    //     status: 'success',
 
-        data: {
-            tour,
-        },
-    });
+    //     data: {
+    //         tour,
+    //     },
+    // });
 };
 
 exports.createTour = (req, res) => {
-    const newId = tours[tours.length - 1].id + 1;
-    //merge two existing objects together
-    const newTour = Object.assign({ id: newId }, req.body);
+    // const newId = tours[tours.length - 1].id + 1;
+    // //merge two existing objects together
+    // const newTour = Object.assign({ id: newId }, req.body);
 
-    tours.push(newTour);
+    // tours.push(newTour);
 
-    fs.writeFile(
-        `${__dirname}/../dev-data/data/tours-simple.json`,
-        JSON.stringify(tours),
-        (err) => {
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    tour: newTour,
-                },
-            });
-        }
-    );
+    // fs.writeFile(
+    //     `${__dirname}/../dev-data/data/tours-simple.json`,
+    //     JSON.stringify(tours),
+    //     (err) => {
+    //         res.status(201).json({
+    //             status: 'success',
+    //             data: {
+    //                 tour: newTour,
+    //             },
+    //         });
+    //     }
+    // );
 };
 
 exports.updateTour = (req, res) => {

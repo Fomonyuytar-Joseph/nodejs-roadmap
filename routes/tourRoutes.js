@@ -1,5 +1,5 @@
 const express = require('express');
-const {getAllTours,getTour,createTour,updateTour,deleteTour,checkID ,checkBody}= require('../controllers/tourController') 
+const {getAllTours,getTour,createTour,updateTour,deleteTour ,checkBody}= require('../controllers/tourController') 
 
 
 
@@ -11,7 +11,7 @@ const {getAllTours,getTour,createTour,updateTour,deleteTour,checkID ,checkBody}=
 
 const router = express.Router();
 
-router.param('id',checkID)
+// router.param('id',checkID)
 
 
 
