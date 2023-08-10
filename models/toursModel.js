@@ -15,7 +15,7 @@ const tourSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'A price must be provided'],
   },
-difficulty: {
+  difficulty: {
     type: String,
     // required: [true, 'A tour must be provided'],
     // unique: true,
