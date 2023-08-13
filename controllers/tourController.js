@@ -36,28 +36,66 @@ exports.getAllTours = async (req, res) => {
     console.log(req.query);
 
     try{
-        //build query
-       const queryObj= {...req.query};
-       const excludedFields=['page','sort','limit','fields'];
-       excludedFields.forEach(el=> delete queryObj[el]);
+      //build query
+      const queryObj = { ...req.query };
+      const excludedFields = ['page', 'sort', 'limit', 'fields'];
+      excludedFields.forEach((el) => delete queryObj[el]);
 
-       console.log(req.query, queryObj);
-        const query =  Tour.find(queryObj);
+      // 2) Advanced filtering
+      let queryStr = JSON.stringify(queryObj);
+
+      queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
+
+      console.log(JSON.parse(queryStr));
 
 
-        //execute the query
-        const tours = await query;
+    
+
+      // { duration: { gte: '5' }, difficulty: 'easy' }
+      let query = Tour.find(JSON.parse(queryStr) );
 
 
-           //send query
-    res.status(200).json({
-      status: 'success',
-      results: tours.length,
-      // requestedAt: req.requestTime,
-      data: {
-        tours,
-      },
-    });}catch(err){
+      //2)sorting
+      if(req.query.sort){
+        const sortBy = req.query.sort.split(',').join('')
+             query= query.sort(sortBy)
+             //sort('price ratingAverge')
+      }else{
+        query= query.sort('-createdAt');
+      }
+
+
+    //3)field limiting 
+    if(req.query.fields){
+        const fields =  req.query.fields.split(',').join('');
+
+        query= query.select(fields)
+    }else{
+        query= query.select('-__v')
+    }
+
+
+    //4)Pagnination
+    const page = req.query.page *1 || 1;
+    const limit = req.query.limit* 1 || 100
+    const skip = (page - 1)*1|| 100
+    //page=2&limit=10 1-10 page1 11-20 page2
+    query= query.skip(skip).limit(limit)
+
+
+      //execute the query
+      const tours = await query;
+
+      //send query
+      res.status(200).json({
+        status: 'success',
+        results: tours.length,
+        // requestedAt: req.requestTime,
+        data: {
+          tours,
+        },
+      });
+    }catch(err){
     res.status(404).json({
         status:"fail",
         message:'cannot get all tours'
